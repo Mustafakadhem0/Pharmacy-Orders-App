@@ -186,3 +186,56 @@ class MainActivity : AppCompatActivity() {
                 700
             )
         )
+        val photoButtons = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER
+        }
+
+        val previousPhoto = Button(this).apply {
+            text = "← السابقة"
+
+            setOnClickListener {
+                if (photos.isNotEmpty()) {
+                    photoIndex--
+
+                    if (photoIndex < 0) {
+                        photoIndex = photos.lastIndex
+                    }
+
+                    zoom = 1f
+                    showOrderScreen()
+                }
+            }
+        }
+
+        val nextPhoto = Button(this).apply {
+            text = "التالية →"
+
+            setOnClickListener {
+                if (photos.isNotEmpty()) {
+                    photoIndex++
+
+                    if (photoIndex > photos.lastIndex) {
+                        photoIndex = 0
+                    }
+
+                    zoom = 1f
+                    showOrderScreen()
+                }
+            }
+        }
+
+        photoButtons.addView(previousPhoto)
+        photoButtons.addView(nextPhoto)
+        box.addView(photoButtons)
+
+        val choosePhotos = Button(this).apply {
+            text = "📷 إضافة صور الرفوف"
+
+            setOnClickListener {
+                val picker = Intent(
+                    Intent.ACTION_OPEN_DOCUMENT
+                ).apply {
+                    type = "image/*"
+                    putExtra(
+                        Intent.EXTRA
